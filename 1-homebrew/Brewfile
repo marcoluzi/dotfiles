@@ -32,6 +32,7 @@ cask 'readdle-spark'
 cask 'slack'
 cask 'spotify'
 cask 'tiles'
+cask 'todoist'
 cask 'visual-studio-code'
 cask 'whatsapp'
 
