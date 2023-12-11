@@ -8,7 +8,7 @@
 
 ## Installation
 - Download this repository and place it in your `~` folder and rename it to `.dotfiles`.
-- `cd ~/.dotfiles` into the folder and run `./bootstrap`
+- `cd ~/.dotfiles` into the folder and run `./bootstrap.sh`
 
 ## Post-Installation Steps
 ### GitHub Access Token for WEBKINDER Yarn Packages
@@ -32,7 +32,7 @@ vim $(brew --prefix phpmyadmin)/share/phpmyadmin/config.inc.php
 ### Install WK-CLI
 - Open the [WK-CLI repository](https://github.com/webkinder/wk-cli) and follow the installation guide in the README.md file.
 
-## Available aliases and functions
+## Available aliases, functions and snippets
 ### Aliases
 - `gaa` -> `git add --all`
 - `bg` -> `git branch`
@@ -86,3 +86,9 @@ vim $(brew --prefix phpmyadmin)/share/phpmyadmin/config.inc.php
 - `yp` -> Runs `yarn prod || yarn production || yarn build`
 - `yw` -> Runs `yarn watch || yarn start || yarn dev`
 - `ywm <env>` -> Runs `yp && wordmove push -t` with the selected environment. `<env>` can be omitted if only one environment is set in the movefile.yml.
+
+### Snippets
+- `bp-{xs/sm/md/lg/xl/xxl}-{up/down/only}` -> SCSS Snippet to create media-breakpoints.
+
+Example:
+`bp-md-up` -> `@include media-breakpoint-up(md) {}`
