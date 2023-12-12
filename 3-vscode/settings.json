@@ -4,9 +4,8 @@
 	"editor.tabSize": 4,
 	"editor.insertSpaces": false,
 	"editor.inlineSuggest.enabled": true,
+	"editor.renderWhitespace": "boundary",
 	"terminal.integrated.defaultProfile.osx": "fish",
-	"telemetry.enableCrashReporter": false,
-	"telemetry.enableTelemetry": false,
 	// intelliphense
 	"php.suggest.basic": false,
 	"editor.quickSuggestions": {
@@ -42,7 +41,6 @@
 	},
 	// js
 	"eslint.validate": ["javascript"],
-	"eslint.packageManager": "yarn",
 	"javascript.validate.enable": false,
 	// json
 	"[json]": {
