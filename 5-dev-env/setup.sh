@@ -64,4 +64,14 @@ symlink "$SOURCE/.npmrc" "$DESTINATION/.npmrc"
 substep_info "Setting up Proxy Driver for Valet..."
 symlink "$SOURCE/WordPressProxyValetDriver.php" "$DESTINATION/.config/valet/Drivers/WordPressProxyValetDriver.php"
 
+substep_info "Configuring ssh..."
+
+mkdir -p ~/.ssh
+touch ~/.ssh/config
+
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+	read -p "Enter your email address: " email
+	ssh-keygen -t ed25519 -C "$email" -f ~/.ssh/id_ed25519 -q -N ""
+fi
+
 success "Finished setting up Development Environment."
