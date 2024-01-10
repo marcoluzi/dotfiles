@@ -5,6 +5,7 @@
 	"editor.insertSpaces": false,
 	"editor.inlineSuggest.enabled": true,
 	"editor.renderWhitespace": "boundary",
+	"workbench.colorTheme": "SynthWave '84",
 	"terminal.integrated.defaultProfile.osx": "fish",
 	// intelliphense
 	"php.suggest.basic": false,
