@@ -32,11 +32,11 @@ $HOME/.composer/vendor/bin/valet link --secure phpmyadmin
 
 sudo $HOME/.composer/vendor/bin/valet trust
 
-substep_info "Setting up Ruby..."
+substep_info "Setting up FNM..."
 eval "$(fnm env --use-on-cd)"
-fnm install 14
-fnm use 14
-fnm default 14
+fnm install 18
+fnm use 18
+fnm default 18
 
 substep_info "Setting up Ruby..."
 eval "$(rbenv init - zsh)"
@@ -64,8 +64,10 @@ symlink "$SOURCE/.npmrc" "$DESTINATION/.npmrc"
 substep_info "Setting up Proxy Driver for Valet..."
 symlink "$SOURCE/WordPressProxyValetDriver.php" "$DESTINATION/.config/valet/Drivers/WordPressProxyValetDriver.php"
 
-substep_info "Configuring ssh..."
+substep_info "Setting up unlighthouse"
+yarn global add @unlighthouse/cli puppeteer
 
+substep_info "Configuring ssh..."
 mkdir -p ~/.ssh
 touch ~/.ssh/config
 

@@ -94,3 +94,7 @@ phpmyadmin can now be accessed via the URL phpmyadmin.test in your browser. The 
 
 Example:
 `bp-md-up` -> `@include media-breakpoint-up(md) {}`
+
+## Features
+### Unlighthouse CLI
+Tool to run Lighthouse Tests on a whole website. See [Unlighthouse Documentation](https://unlighthouse.dev/integrations/ci) for more infos.
