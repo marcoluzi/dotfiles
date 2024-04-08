@@ -1,3 +1,3 @@
 function yw --description 'Start yarn watch'
-    yarn watch || yarn start || yarn dev
+    yarn dev || yarn watch || yarn start
 end
