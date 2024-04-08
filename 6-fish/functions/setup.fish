@@ -6,7 +6,7 @@ function setup
     abbr gaa git add --all
     abbr gb git branch
     abbr gbd git branch -d
-    abbr gcam git commit -am
+    abbr gcam git commit -S -am
     abbr gcb git checkout -b
     abbr gco git checkout
     abbr glg git log --stat
