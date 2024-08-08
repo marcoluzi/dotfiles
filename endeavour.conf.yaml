@@ -135,6 +135,12 @@
     stdout: true
     stderr: true
   -
+    command: sudo usermod -aG docker $USER
+    description: Adding user to docker group
+    stdin: true
+    stdout: true
+    stderr: true
+  -
     command: fnm install --lts
     description: Install latest node version
     stdin: true
