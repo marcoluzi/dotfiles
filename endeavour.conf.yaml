@@ -7,6 +7,7 @@
 - yay:
   - bat
   - composer
+  - docker
   - gamemode
   - lib32-gamemode
   - fd
@@ -124,6 +125,24 @@
   -
     command: chsh -s /usr/bin/zsh
     description: Changing shell to zsh
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: systemctl start docker.socket
+    description: Enable docker service
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: fnm install --lts
+    description: Install latest node version
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: corepack enable
+    description: Enable corepack
     stdin: true
     stdout: true
     stderr: true
