@@ -34,6 +34,7 @@
   - ripgrep
   - thefuck
   - tmux
+  - wp-cli
   - zsh
 
 - cask:
