@@ -19,6 +19,7 @@
   - shivammathur/php
 
 - brew:
+  - bash
   - bat
   - composer
   - fd
