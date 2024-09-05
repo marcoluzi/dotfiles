@@ -8,6 +8,7 @@
   - bat
   - composer
   - docker
+  - docker-compose
   - gamemode
   - lib32-gamemode
   - fd
@@ -15,6 +16,7 @@
   - gcc
   - ghq
   - git
+  - gitflow-avh
   - make
   - neovim
   - openssh
