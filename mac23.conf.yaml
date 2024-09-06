@@ -7,6 +7,8 @@
 - link:
     ~/.config/alacritty/alacritty.shell.toml:
         path: config/alacritty/alacritty.shell.apple.toml
+    ~/.docker/config.json:
+        path: docker/config.apple.json
 
 - cask:
   - adobe-creative-cloud

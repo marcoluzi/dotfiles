@@ -7,6 +7,8 @@
 - link:
     ~/.config/alacritty/alacritty.shell.toml:
         path: config/alacritty/alacritty.shell.intel.toml
+    ~/.docker/config.json:
+        path: docker/config.intel.json
 
 - shell:
   - [sudo scutil --set ComputerName "Marco's MacBook Pro (2017)", Setting ComputerName]

@@ -22,6 +22,8 @@
   - bash
   - bat
   - composer
+  - docker
+  - docker-compose
   - fd
   - fnm
   - gh
