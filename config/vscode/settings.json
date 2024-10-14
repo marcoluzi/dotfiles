@@ -12,5 +12,9 @@
     },
     "emmet.includeLanguages": {
         "twig": "html"
+    },
+    "codeium.enableConfig": {
+        "*": true,
+        "twig": true
     }
 }
