@@ -95,9 +95,13 @@
     extensions:
         - formulahendry.auto-rename-tag
         - aaron-bond.better-comments
+        - codeium.codeium
+        - stackbreak.comment-divider
         - dbaeumer.vscode-eslint
         - eamodio.gitlens
+        - cjhowe7.laravel-blade
         - neilbrayfield.php-docblocker
+        - bmewburn.vscode-intelephense-client
         - gruntfuggly.todo-tree
         - enkia.tokyo-night
         - mblode.twig-language-2
