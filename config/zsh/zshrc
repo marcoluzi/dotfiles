@@ -11,6 +11,7 @@ export HISTSIZE=10000
 export SAVEHIST=100000
 export HISTORY_IGNORE="(ls|ls -al|cd|pwd|zsh|exit|cd ..|gsb|gaa|ggp|ggl|gfo|gf|clear|als|yd)"
 export LISTMAX=1000
+export LS_COLORS="$(vivid generate tokyonight-night)"
 
 autoload -Uz compinit && compinit -u
 
@@ -49,6 +50,8 @@ zstyle ':omz:plugins:alias-finder' autoload yes
 zstyle ':omz:plugins:alias-finder' longer yes
 zstyle ':omz:plugins:alias-finder' exact yes
 zstyle ':omz:plugins:alias-finder' cheaper yes
+
+alias ls='gls --color'
 
 # omz rsync plugin
 source $HOME/.dotfiles/ohmyzsh/plugins/rsync/rsync.plugin.zsh

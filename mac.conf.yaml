@@ -23,6 +23,7 @@
   - bat
   - colima
   - composer
+  - coreutils
   - docker
   - docker-compose
   - docker-machine
@@ -40,6 +41,7 @@
   - ripgrep
   - thefuck
   - tmux
+  - vivid
   - wp-cli
   - zsh
 
