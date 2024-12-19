@@ -1,0 +1,13 @@
+general.import = [
+    "~/.dotfiles/tokyonight.nvim/extras/alacritty/tokyonight_night.toml"
+]
+
+[font.normal]
+family = "MesloLGS NF"
+
+[window.padding]
+x = 16
+y = 16
+
+[env]
+TERM = "xterm-256color"

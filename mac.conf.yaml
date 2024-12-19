@@ -11,6 +11,28 @@
 - shell:
     - [git submodule update --init --recursive, Running git submodule update]
 
+- link:
+    ~/.dotfiles: .
+    ~/.gitconfig: home/gitconfig
+    ~/.p10k.zsh: home/p10k.zsh
+    ~/.zprofile: home/zprofile
+    ~/.zshenv: home/zshenv
+    ~/.zshrc: home/zshrc
+    ~/.config/alacritty/alacritty.toml: config/alacritty/alacritty.toml
+    ~/.config/zsh: config/zsh
+
 - brew:
+  - bat
+  - fnm
   - font-meslo-for-powerlevel10k
+  - gh
+  - git
+  - git-flow
+  - mariadb
+  - node
+  - nvim
+  - openssh
+  - php
+  - phpmyadmin
   - powerlevel10k
+  - wp-cli

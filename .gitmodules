@@ -2,3 +2,15 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "dotbot-brew"]
+	path = dotbot-brew
+	url = https://github.com/wren/dotbot-brew.git
+[submodule "dotbot-vscode"]
+	path = dotbot-vscode
+	url = https://github.com/hujianxin/dotbot-vscode.git
+[submodule "dotbot-yay"]
+	path = dotbot-yay
+	url = https://github.com/OxSon/dotbot-yay.git
+[submodule "tokyonight.nvim"]
+	path = tokyonight.nvim
+	url = https://github.com/folke/tokyonight.nvim.git
