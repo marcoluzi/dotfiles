@@ -38,6 +38,7 @@
   - nvim
   - openssh
   - php
+  - pyenv
   - ripgrep
   - thefuck
   - tmux

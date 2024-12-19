@@ -21,6 +21,7 @@ path=(
 	/opt/homebrew/bin(N-/)
 	/usr/local/bin(N-/)
 	~/bin(N-/)
+	~/.pyenv/shims(N-/)
 	$path
 )
 export PATH
