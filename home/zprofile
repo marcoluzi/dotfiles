@@ -1,0 +1,32 @@
+# PATH management
+path=(
+	$HOME/.config/composer/vendor/bin(N-/)
+	$HOME/bin(N-/)
+	$path
+)
+
+# macOS-specific paths
+if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ "$(uname -m)" == "x86_64" ]]; then
+        path+=(
+            /usr/local/bin(N-/)                  # Intel-specific Homebrew
+        )
+    elif [[ "$(uname -m)" == "arm64" ]]; then
+        path+=(
+            /opt/homebrew/bin(N-/)               # M1-specific Homebrew
+        )
+    fi
+fi
+
+# Linux-specific paths
+if [[ "$(uname)" == "Linux" ]]; then
+    # path+=(
+
+    # )
+fi
+
+# Ensure unique and ordered paths
+path=(${(uo)path})
+
+# Export PATH
+export PATH

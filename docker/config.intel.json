@@ -1,5 +1,0 @@
-{
-    "cliPluginsExtraDirs": [
-        "/usr/local/lib/docker/cli-plugins"
-    ]
-}

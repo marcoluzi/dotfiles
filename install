@@ -2,37 +2,51 @@
 
 set -e
 
-DEFAULT_CONFIG_PREFIX="default"
-CONFIG_SUFFIX=".conf.yaml"
+# Check if no arguments are passed
+if [ $# -eq 0 ]; then
+    echo "Usage:"
+    echo "  ./install mac17         Setup MacBook Pro 2017"
+    echo "  ./install mac23         Setup MacBook Pro 2023"
+    echo "  ./install endeavour     Setup EndeavourOS"
+    exit 1
+fi
+
+# Validate arguments
+case "$1" in
+    mac17|mac23|endeavour) ;;
+    *)
+        echo "Usage:"
+        echo "  ./install mac17         Setup MacBook Pro 2017"
+        echo "  ./install mac23         Setup MacBook Pro 2023"
+        echo "  ./install endeavour     Setup EndeavourOS"
+        exit 1
+        ;;
+esac
+
 DOTBOT_DIR="dotbot"
-
 DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd "${BASEDIR}"
-
+cd "${BASE_DIR}"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-git -C dotbot-vscode submodule sync --quiet --recursive
-git submodule update --init --recursive dotbot-vscode
+if [[ "$1" == mac* ]]; then
+    sudo echo
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-if [[ "${@}" == *"mac"* ]]; then
-	git -C dotbot-brew submodule sync --quiet --recursive
-	git submodule update --init --recursive dotbot-brew
+    PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode --plugin-dir dotbot-brew -c "mac.conf.yaml"
+
+    if [[ "$1" == mac17 ]]; then
+        CONFIG_FILE="mac17.conf.yaml"
+    elif [[ "$1" == mac23 ]]; then
+        CONFIG_FILE="mac23.conf.yaml"
+    fi
+
+    PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode --plugin-dir dotbot-brew -c "${CONFIG_FILE}"
+elif [[ "$1" == "endeavour" ]]; then
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode -p dotbot-yay/yay.py -c "endeavour.conf.yaml"
 fi
 
-if [[ "${@}" == *"endeavour"* ]]; then
-	git -C dotbot-yay submodule sync --quiet --recursive
-	git submodule update --init --recursive dotbot-yay
-fi
-
-for conf in ${DEFAULT_CONFIG_PREFIX} ${@}; do
-	if [[ "${@}" == *"mac"* ]]; then
-		"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" --plugin-dir dotbot-vscode --plugin-dir dotbot-brew -c "${conf}${CONFIG_SUFFIX}" -v
-	elif [[ "${@}" == *"endeavour"* ]]; then
-		"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" --plugin-dir dotbot-vscode -p dotbot-yay/yay.py -c "${conf}${CONFIG_SUFFIX}" -v
-	else
-		"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" --plugin-dir dotbot-vscode -c "${conf}${CONFIG_SUFFIX}" -v
-	fi
-done

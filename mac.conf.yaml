@@ -1,110 +1,16 @@
 - defaults:
+    clean:
+      force: true
     link:
       create: true
       relink: true
       force: true
 
-- create:
-    - ~/.local/share/zsh
-    - ~/.cache/zsh/thefuck
-
-- link:
-    ~/Library/Application Support/Code/User/settings.json: config/vscode/settings.json
-    ~/.config/valet/Drivers/WordPressMultisiteSubdirectoryValetDriver.php: config/valet/drivers/WordPressMultisiteSubdirectoryValetDriver.php
-    ~/.config/valet/Drivers/WordPressProxyValetDriver.php: config/valet/drivers/WordPressProxyValetDriver.php
-
-- install-brew: true
-
-- tap:
-  - shivammathur/php
-
-- brew:
-  - bash
-  - bat
-  - colima
-  - composer
-  - coreutils
-  - docker
-  - docker-compose
-  - docker-machine
-  - fd
-  - fnm
-  - gh
-  - ghq
-  - git
-  - git-flow
-  - mariadb
-  - node
-  - nvim
-  - openssh
-  - php
-  - pyenv
-  - ripgrep
-  - thefuck
-  - tmux
-  - vivid
-  - wp-cli
-  - zsh
-
-- cask:
-  - alacritty
-  - aldente
-  - alfred
-  - bartender
-  - brave-browser
-  - cleanmymac
-  - dropbox
-  - firefox
-  - font-fira-code-nerd-font
-  - obsidian
-  - rectangle
-  - spotify
-  - visual-studio-code
-  - 1password
-
-- vscode:
-    exec: code
-    uninstall-not-listed: false
-    extensions:
-        - formulahendry.auto-rename-tag
-        - aaron-bond.better-comments
-        - codeium.codeium
-        - stackbreak.comment-divider
-        - editorconfig.editorconfig
-        - dbaeumer.vscode-eslint
-        - eamodio.gitlens
-        - cjhowe7.laravel-blade
-        - neilbrayfield.php-docblocker
-        - bmewburn.vscode-intelephense-client
-        - bradlc.vscode-tailwindcss
-        - gruntfuggly.todo-tree
-        - enkia.tokyo-night
-        - mblode.twig-language-2
+- clean: ['~', '~/.config']
 
 - shell:
-  - [composer global require laravel/valet, Downloading Laravel Valet]
-  - [valet install, Installing Laravel Valet]
-  - [colima start, Starting Colima for Docker]
-  - [defaults write com.apple.dock "orientation" -string "left", Moving dock to the left]
-  - [defaults write com.apple.dock "tilesize" -int "36", Setting dock icon size to 36]
-  - [defaults write com.apple.dock "autohide" -bool "true", Hiding dock]
-  - [defaults write com.apple.dock "show-recents" -bool "false", Disabling recent apps in dock]
-  - [defaults write com.apple.dock "static-only" -bool "true", Only show active apps in dock]
-  - [defaults write com.apple.screencapture "location" -string "~/Pictures", Changing screenshot location to ~/Pictures]
-  - [defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true", Showing all file extensions]
-  - [defaults write com.apple.finder "AppleShowAllFiles" -bool "true", Showing hidden files]
-  - [defaults write com.apple.finder "ShowPathbar" -bool "true", Showing path bar]
-  - [defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv", Setting default view to list]
-  - [defaults write com.apple.finder "FXDefaultSearchScope" -string "SCcf", Setting default search to current folder]
-  - [defaults write com.apple.finder "FXRemoveOldTrashItems" -bool "true", Removing items from trash after 30 days]
-  - [defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false", Disabling extension change warning]
-  - [defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false", Saving new documents to local by default]
-  - [defaults write NSGlobalDomain "NSTableViewDefaultSizeMode" -int "1", Setting default table view size to small]
-  - [defaults write com.apple.finder "ShowExternalHardDrivesOnDesktop" -bool "false", Hiding external drives from desktop]
-  - [defaults write com.apple.finder "ShowRemovableMediaOnDesktop" -bool "false", Hiding removable media from desktop]
-  - [defaults write com.apple.dock "mru-spaces" -bool "false", Disabling most recent spaces]
-  - [defaults write com.apple.dock persistent-apps -array, Removing all apps from dock]
-  - [killall Dock, Reloading dock]
-  - [killall Finder, Reloading Finder]
-  - [killall SystemUIServer, Reloading SystemUIServer]
-  
+    - [git submodule update --init --recursive, Running git submodule update]
+
+- brew:
+  - font-meslo-for-powerlevel10k
+  - powerlevel10k
