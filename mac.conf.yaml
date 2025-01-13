@@ -32,6 +32,9 @@
   - nvim
   - openssh
   - powerlevel10k
+  # - docker-credential-helper
+  # - docker
+  # - colima
 
 - cask:
   - alacritty
