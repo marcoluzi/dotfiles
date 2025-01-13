@@ -1,5 +1,5 @@
 general.import = [
-    "~/.dotfiles/tokyonight.nvim/extras/alacritty/tokyonight_night.toml"
+    "~/.local/share/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_night.toml",
 ]
 
 [font.normal]

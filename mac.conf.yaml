@@ -20,19 +20,20 @@
     ~/.zshrc: home/zshrc
     ~/.config/alacritty/alacritty.toml: config/alacritty/alacritty.toml
     ~/.config/zsh: config/zsh
+    ~/.config/nvim: kickstart.nvim
 
 - brew:
   - bat
-  - fnm
+  # - fnm
   - font-meslo-for-powerlevel10k
   - gh
   - git
-  - git-flow
-  - mariadb
-  - node
+  # - git-flow
+  # - mariadb
+  # - node
   - nvim
   - openssh
-  - php
-  - phpmyadmin
+  # - php
+  # - phpmyadmin
   - powerlevel10k
   - wp-cli
