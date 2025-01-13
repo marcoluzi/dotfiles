@@ -21,6 +21,7 @@
     ~/.config/alacritty/alacritty.toml: config/alacritty/alacritty.toml
     ~/.config/zsh: config/zsh
     ~/.config/nvim: kickstart.nvim
+    ~/Library/Application Support/Code/User/settings.json: config/vscode/settings.json
 
 - brew:
   - coreutils
