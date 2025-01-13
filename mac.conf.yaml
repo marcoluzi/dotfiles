@@ -35,6 +35,7 @@
   # - docker-credential-helper
   # - docker
   # - colima
+  # - docker-compose
 
 - cask:
   - alacritty
