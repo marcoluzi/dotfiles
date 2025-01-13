@@ -33,6 +33,7 @@
   - openssh
   - powerlevel10k
   - spotify_player
+  - tmux
   # - docker-credential-helper
   # - docker
   # - colima
