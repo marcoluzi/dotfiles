@@ -17,3 +17,6 @@
 [submodule "kickstart.nvim"]
 	path = kickstart.nvim
 	url = https://github.com/marcoluzi/kickstart.nvim/
+[submodule "ohmyzsh"]
+	path = ohmyzsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
