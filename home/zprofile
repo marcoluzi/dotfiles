@@ -8,25 +8,27 @@ path=(
 # macOS-specific paths
 if [[ "$(uname)" == "Darwin" ]]; then
     if [[ "$(uname -m)" == "x86_64" ]]; then
-        path+=(
+        path=(
             /usr/local/bin(N-/)                  # Intel-specific Homebrew
+            $path
         )
     elif [[ "$(uname -m)" == "arm64" ]]; then
-        path+=(
-            /opt/homebrew/bin(N-/)               # M1-specific Homebrew
+        path=(
+            /opt/homebrew/bin(N-/)    
+            $path           # M1-specific Homebrew
         )
     fi
 fi
 
 # Linux-specific paths
 if [[ "$(uname)" == "Linux" ]]; then
-    # path+=(
-
+    # path=(
+    #     $path
     # )
 fi
 
 # Ensure unique and ordered paths
-path=(${(uo)path})
+path=(${(u)path})
 
 # Export PATH
 export PATH
