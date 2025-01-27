@@ -4,10 +4,10 @@
 	ignore = dirty
 [submodule "dotbot-brew"]
 	path = dotbot-brew
-	url = https://github.com/wren/dotbot-brew.git
+	url = https://github.com/d12frosted/dotbot-brew.git
 [submodule "dotbot-vscode"]
 	path = dotbot-vscode
-	url = https://github.com/hujianxin/dotbot-vscode.git
+	url = https://github.com/hujianxin/dotbot-vscode
 [submodule "dotbot-yay"]
 	path = dotbot-yay
 	url = https://github.com/OxSon/dotbot-yay.git
