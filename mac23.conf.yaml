@@ -8,4 +8,3 @@
   - [chmod go-w "/opt/homebrew/share", Fixing permissions on /opt/homebrew/share]
   - [chmod -R go-w "/opt/homebrew/share/zsh", Fixing permissions on /opt/homebrew/share/zsh]
   # - [mkdir -p ~/.docker/cli-plugins && ls -sfn /opt/homebrew/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose, Linking docker-compose cli plugin]
-  
