@@ -33,7 +33,7 @@ git submodule update --init --recursive "${DOTBOT_DIR}"
 
 if [[ "$1" == mac* ]]; then
     sudo echo
-    # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
     "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-brew -v -c "mac.conf.yaml"

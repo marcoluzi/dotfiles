@@ -52,3 +52,11 @@
   - todoist
   - visual-studio-code
   - 1password
+
+- shell:
+  -
+    command: curl -fsSL https://raw.githubusercontent.com/rmmgc/vscode-extensions-bulk-install/main/bulk-install.sh | sh -s ~/.dotfiles/vscodefile.txt
+    stdin: true
+    stdout: true
+    description: Installing vscode extensions
+    quiet: true

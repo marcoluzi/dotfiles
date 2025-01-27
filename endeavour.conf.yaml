@@ -14,4 +14,11 @@
 - yay:
   - ttf-meslo-nerd-font-powerlevel10k
   - zsh-theme-powerlevel10k-git
-  
+
+- shell:
+  -
+    command: curl -fsSL https://raw.githubusercontent.com/rmmgc/vscode-extensions-bulk-install/main/bulk-install.sh | sh -s ~/.dotfiles/vscodefile.txt
+    stdin: true
+    stdout: true
+    description: Installing vscode extensions
+    quiet: true
