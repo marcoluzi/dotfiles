@@ -2,10 +2,10 @@ export HISTFILE=$HOME/.histfile
 export HISTSIZE=1000000
 export SAVEHIST=1000000
 
-export ZSH_COMPDUMP="$HOME/.cache/zcompdump-$ZSH_VERSION"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="(cd *|la *|ls *|l *|cat *|man *|rm *|mv *|chmod *|cp *|rmdir *)"
+export ZSH_CACHE_DIR="$HOME/.cache/zsh"
 
 export SHELL_SESSIONS_DISABLE=1
 

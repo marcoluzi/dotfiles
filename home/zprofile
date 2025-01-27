@@ -1,37 +1,41 @@
 # ----------------------------------- PATH ----------------------------------- #
 
 path=(
-	$HOME/.config/composer/vendor/bin(N-/)
 	$HOME/bin(N-/)
 	$path
 )
 
 # macOS-specific paths
-if [[ "$(uname)" == "Darwin" ]]; then
-    if [[ "$(uname -m)" == "x86_64" ]]; then
-        path=(
-            /usr/local/bin(N-/)                  # Intel-specific Homebrew
-            $path
-        )
-    elif [[ "$(uname -m)" == "arm64" ]]; then
-        path=(
-            /opt/homebrew/bin(N-/)
-            $path
-        )
-    fi
-fi
+# if [[ "$(uname)" == "Darwin" ]]; then
+#     if [[ "$(uname -m)" == "x86_64" ]]; then
+#         path=(
+#             /usr/local/bin(N-/)                  # Intel-specific Homebrew
+#             $path
+#         )
+#     elif [[ "$(uname -m)" == "arm64" ]]; then
+#         path=(
+#             /opt/homebrew/bin(N-/)
+#             $path
+#         )
+#     fi
+# fi
 
 # Linux-specific paths
-if [[ "$(uname)" == "Linux" ]]; then
-    # path=(
-    #     $path
-    # )
+# if [[ "$(uname)" == "Linux" ]]; then
+#     path=(
+#         $path
+#     )
+# fi
+
+# ------------------------ Setting up brew environment ----------------------- #
+
+if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ "$(uname -m)" == "x86_64" ]]; then
+        eval  "$(/usr/local/bin/brew shellenv)"
+    elif [[ "$(uname -m)" == "arm64" ]]; then
+        eval  "$(/opt/homebrew/bin/brew shellenv)"
+    fi
 fi
-
-# Ensure unique and ordered paths
-path=(${(u)path})
-
-export PATH
 
 # ----------------------------------- FPATH ---------------------------------- #
 
@@ -41,24 +45,31 @@ fpath=(
 )
 
 # macOS-specific fpaths
-if [[ "$(uname)" == "Darwin" ]]; then
-    if [[ "$(uname -m)" == "x86_64" ]]; then
-        fpath=(
-            $fpath
-        )
-    elif [[ "$(uname -m)" == "arm64" ]]; then
-        fpath=(
-            $fpath
-        )
-    fi
-fi
+# if [[ "$(uname)" == "Darwin" ]]; then
+#     if [[ "$(uname -m)" == "x86_64" ]]; then
+#         fpath=(
+#             $fpath
+#         )
+#     elif [[ "$(uname -m)" == "arm64" ]]; then
+#         fpath=(
+#             $fpath
+#         )
+#     fi
+# fi
 
 # Linux-specific fpaths
-if [[ "$(uname)" == "Linux" ]]; then
-    # fpath=(
-    #     $fpath
-    # )
-fi
+# if [[ "$(uname)" == "Linux" ]]; then
+#     fpath=(
+#         $fpath
+#     )
+# fi
+
+# ------------------------- Exporting PATH and FPATH ------------------------- #
+
+# Ensure unique and ordered paths
+path=(${(u)path})
+
+export PATH
 
 # Ensure unique and ordered fpaths
 fpath=(${(u)fpath})

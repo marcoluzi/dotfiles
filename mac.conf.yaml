@@ -32,6 +32,7 @@
   - nvim
   - openssh
   - powerlevel10k
+  - tldr
   - tmux
   # - docker-credential-helper
   # - docker

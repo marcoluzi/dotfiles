@@ -5,12 +5,36 @@ compinit
 # variables
 source $HOME/.config/zsh/variables.zsh
 
-# aliases
+# omz plugins
 source $HOME/.dotfiles/ohmyzsh/plugins/aliases/aliases.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/common-aliases/common-aliases.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/composer/composer.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/lib/git.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/git/git.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/gnu-utils/gnu-utils.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/laravel/laravel.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/rsync/rsync.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/ssh/ssh.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/sudo/sudo.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/yarn/yarn.plugin.zsh
+
+# macOS-specific omz plugins
+if [[ "$(uname)" == "Darwin" ]]; then
+    source $HOME/.dotfiles/ohmyzsh/plugins/brew/brew.plugin.zsh
+
+    # if [[ "$(uname -m)" == "x86_64" ]]; then
+       
+    # elif [[ "$(uname -m)" == "arm64" ]]; then
+        
+    # fi
+fi
+
+# Linux-specific paths
+# if [[ "$(uname)" == "Linux" ]]; then
+
+# fi
+
+# aliases
 source $HOME/.config/zsh/aliases.zsh
 
 # autosuggestions
