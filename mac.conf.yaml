@@ -32,7 +32,6 @@
   - nvim
   - openssh
   - powerlevel10k
-  - spotify_player
   - tmux
   # - docker-credential-helper
   # - docker
@@ -49,5 +48,6 @@
   - firefox
   - obsidian
   - rectangle
+  - todoist
   - visual-studio-code
   - 1password
