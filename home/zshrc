@@ -1,4 +1,4 @@
-# Activating completions, needed for oh-my-zsh plugins
+# Activating completions
 autoload -Uz compinit
 compinit
 
@@ -13,9 +13,19 @@ source $HOME/.dotfiles/ohmyzsh/plugins/git/git.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/rsync/rsync.plugin.zsh
 source $HOME/.config/zsh/aliases.zsh
 
+# autosuggestions
+source $HOME/.dotfiles/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 if command -v fnm >/dev/null 2>&1; then
   eval "$(fnm env --use-on-cd --shell zsh)"
 fi
+
+# setting history options
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt INC_APPEND_HISTORY_TIME
+setopt EXTENDED_HISTORY
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

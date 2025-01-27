@@ -1,4 +1,5 @@
-# PATH management
+# ----------------------------------- PATH ----------------------------------- #
+
 path=(
 	$HOME/.config/composer/vendor/bin(N-/)
 	$HOME/bin(N-/)
@@ -14,8 +15,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
         )
     elif [[ "$(uname -m)" == "arm64" ]]; then
         path=(
-            /opt/homebrew/bin(N-/)    
-            $path           # M1-specific Homebrew
+            /opt/homebrew/bin(N-/)
+            $path
         )
     fi
 fi
@@ -30,5 +31,36 @@ fi
 # Ensure unique and ordered paths
 path=(${(u)path})
 
-# Export PATH
 export PATH
+
+# ----------------------------------- FPATH ---------------------------------- #
+
+fpath=(
+    $HOME/.dotfiles/zsh-completions/src
+	$fpath
+)
+
+# macOS-specific fpaths
+if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ "$(uname -m)" == "x86_64" ]]; then
+        fpath=(
+            $fpath
+        )
+    elif [[ "$(uname -m)" == "arm64" ]]; then
+        fpath=(
+            $fpath
+        )
+    fi
+fi
+
+# Linux-specific fpaths
+if [[ "$(uname)" == "Linux" ]]; then
+    # fpath=(
+    #     $fpath
+    # )
+fi
+
+# Ensure unique and ordered fpaths
+fpath=(${(u)fpath})
+
+export FPATH

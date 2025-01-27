@@ -1,6 +1,8 @@
 - shell:
-  # - [mkdir -p ~/.docker/cli-plugins && ls -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose, Linking docker-compose cli plugin]
   - [sudo scutil --set ComputerName "Marco's MacBook Pro (2017)", Setting ComputerName]
   - [sudo scutil --set HostName "marco-mbp17", Setting HostName]
   - [sudo scutil --set LocalHostName "Marco-MBP17", Setting LocalHostName]
+  - [chmod go-w "/usr/local/share", Fixing permissions on /opt/homebrew/share]
+  - [chmod -R go-w "/usr/local/share/zsh", Fixing permissions on /opt/homebrew/share/zsh]
+  # - [mkdir -p ~/.docker/cli-plugins && ls -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose, Linking docker-compose cli plugin]
   
