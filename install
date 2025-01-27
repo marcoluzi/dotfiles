@@ -36,7 +36,7 @@ if [[ "$1" == mac* ]]; then
     # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
-    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode --plugin-dir dotbot-brew -v -c "mac.conf.yaml"
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-brew -v -c "mac.conf.yaml"
 
     if [[ "$1" == mac17 ]]; then
         CONFIG_FILE="mac17.conf.yaml"
@@ -45,7 +45,7 @@ if [[ "$1" == mac* ]]; then
     fi
 
     PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
-    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode --plugin-dir dotbot-brew -v -c "${CONFIG_FILE}"
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-brew -v -c "${CONFIG_FILE}"
 elif [[ "$1" == "endeavour" ]]; then
-    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-vscode -p dotbot-yay/yay.py -c "endeavour.conf.yaml"
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" -p dotbot-yay/yay.py -c "endeavour.conf.yaml"
 fi
