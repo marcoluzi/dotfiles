@@ -2,8 +2,12 @@ general.import = [
     "~/.local/share/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_night.toml",
 ]
 
+[font]
+size = 14
+
 [font.normal]
-family = "MesloLGS NF"
+family = "FiraCode Nerd Font"
+style = "Regular"
 
 [window.padding]
 x = 16

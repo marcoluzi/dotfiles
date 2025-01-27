@@ -25,7 +25,6 @@
 
 - brew:
   - coreutils
-  - font-meslo-for-powerlevel10k
   - gh
   - ghq
   - git
@@ -47,6 +46,7 @@
   - brave-browser
   - dropbox
   - firefox
+  - font-fira-code-nerd-font
   - obsidian
   - rectangle
   - todoist

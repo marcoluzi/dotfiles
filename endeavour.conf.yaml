@@ -12,8 +12,7 @@
     - [git submodule update --init --recursive, Running git submodule update]
 
 - yay:
-  - ttf-meslo-nerd-font-powerlevel10k
-  - zsh-theme-powerlevel10k-git
+  # - zsh-theme-powerlevel10k-git
 
 - shell:
   -

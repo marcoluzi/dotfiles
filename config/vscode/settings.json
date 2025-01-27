@@ -1,4 +1,18 @@
 {
     "workbench.colorTheme": "Tokyo Night",
-    "terminal.integrated.fontFamily": "MesloLGS NF"
+    "editor.fontFamily": "FiraCode Nerd Font",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.wordWrap": "on",
+    "editor.lineHeight": 1.5, 
+    "editor.minimap.enabled": false,
+    "editor.smoothScrolling": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "editor.snippetSuggestions": "top",
+    "files.autoSave": "afterDelay",
+    "editor.renderWhitespace": "all"
 }
