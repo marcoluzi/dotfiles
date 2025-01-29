@@ -43,15 +43,15 @@
   - aldente
   - alfred
   - bartender
-  - brave-browser
+  - chromium
   - dropbox
   - firefox
   - font-fira-code-nerd-font
   - obsidian
   - rectangle
-  - todoist
+  # - todoist
   - visual-studio-code
-  - 1password
+  # - 1password
 
 - shell:
   -
