@@ -28,15 +28,13 @@
   - gh
   - ghq
   - git
+  - mkcert
+  - nss
   - nvim
   - openssh
   - powerlevel10k
+  - rsync
   - tldr
-  - tmux
-  # - docker-credential-helper
-  # - docker
-  # - colima
-  # - docker-compose
 
 - cask:
   - alacritty
@@ -44,14 +42,13 @@
   - alfred
   - bartender
   - chromium
+  - docker
   - dropbox
   - firefox
   - font-fira-code-nerd-font
   - obsidian
   - rectangle
-  # - todoist
   - visual-studio-code
-  # - 1password
 
 - shell:
   -
@@ -60,3 +57,7 @@
     stdout: true
     description: Installing vscode extensions
     quiet: true
+  - [sudo mkdir -p /etc/resolver]
+  - [echo "nameserver 127.0.0.1" | sudo tee -a /etc/resolver/lan > /dev/null]
+  - [echo "nameserver 127.0.0.1" | sudo tee -a /etc/resolver/test > /dev/null]
+  - [mkcert -install, Setting up the local Root CA]
