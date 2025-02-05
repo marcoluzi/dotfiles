@@ -14,5 +14,11 @@
     },
     "editor.snippetSuggestions": "top",
     "files.autoSave": "afterDelay",
-    "editor.renderWhitespace": "all"
+    "editor.renderWhitespace": "all",
+    "files.associations": {
+        "*.html": "twig"
+    },
+    "emmet.includeLanguages": {
+        "twig": "html"
+    }
 }
