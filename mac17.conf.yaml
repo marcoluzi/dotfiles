@@ -1,3 +1,6 @@
+- cask:
+  - discord
+
 - shell:
   - [sudo scutil --set ComputerName "Marco's MacBook Pro (2017)", Setting ComputerName]
   - [sudo scutil --set HostName "marco-mbp17", Setting HostName]

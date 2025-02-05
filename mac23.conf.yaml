@@ -1,5 +1,6 @@
 - cask:
   - asana
+  - slack
 
 - shell:
   - [sudo scutil --set ComputerName "Marco's MacBook Pro (2023)", Setting ComputerName]
