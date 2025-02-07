@@ -40,7 +40,8 @@ fi
 # ----------------------------------- FPATH ---------------------------------- #
 
 fpath=(
-    $HOME/.dotfiles/zsh-completions/src
+    $HOME/.docker/completions(N-/)
+    $HOME/.dotfiles/zsh-completions/src(N-/)
 	$fpath
 )
 

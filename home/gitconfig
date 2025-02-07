@@ -17,3 +17,6 @@
     name = Marco Luzi
     email = dev@luzimarco.ch
 	signingkey = ~/.ssh/id_ed25519.pub
+
+[ghq]
+    root = ~/development/repos

@@ -16,7 +16,8 @@
     "files.autoSave": "afterDelay",
     "editor.renderWhitespace": "all",
     "files.associations": {
-        "*.html": "twig"
+        "*.html": "twig",
+        "*.twig": "html"
     },
     "emmet.includeLanguages": {
         "twig": "html"
