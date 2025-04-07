@@ -21,15 +21,13 @@
     ~/.config/alacritty/alacritty.toml: config/alacritty/alacritty.toml
     ~/.config/zsh: config/zsh
     ~/.config/nvim: kickstart.nvim
-    ~/Library/Application Support/Code/User/settings.json: config/vscode/settings.json
+    ~/Library/Application Support/Windsurf/User/settings.json: config/windsurf/settings.json
 
 - brew:
   - coreutils
   - gh
   - ghq
   - git
-  - mkcert
-  - nss
   - nvim
   - openssh
   - powerlevel10k
@@ -41,25 +39,15 @@
   - aldente
   - alfred
   - bartender
-  - chromium
   - cleanmymac
   - docker
   - dropbox
   - firefox
   - font-fira-code-nerd-font
+  - google-chrome
   - obsidian
   - rectangle
-  - visual-studio-code
+  - windsurf
 
 - shell:
-  -
-    command: curl -fsSL https://raw.githubusercontent.com/rmmgc/vscode-extensions-bulk-install/main/bulk-install.sh | sh -s ~/.dotfiles/vscodefile.txt
-    stdin: true
-    stdout: true
-    description: Installing vscode extensions
-    quiet: true
-  - [sudo mkdir -p /etc/resolver]
   - [mkdir -p ~/.cache/zsh/completions]
-  - [echo "nameserver 127.0.0.1" | sudo tee -a /etc/resolver/lan > /dev/null]
-  - [echo "nameserver 127.0.0.1" | sudo tee -a /etc/resolver/test > /dev/null]
-  - [mkcert -install, Setting up the local Root CA]
