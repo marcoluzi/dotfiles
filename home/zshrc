@@ -20,6 +20,8 @@ source $HOME/.config/zsh/variables.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/aliases/aliases.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/common-aliases/common-aliases.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/composer/composer.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/docker/docker.plugin.zsh
+source $HOME/.dotfiles/ohmyzsh/plugins/docker-compose/docker-compose.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/lib/git.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/git/git.plugin.zsh
 source $HOME/.dotfiles/ohmyzsh/plugins/gnu-utils/gnu-utils.plugin.zsh
@@ -75,3 +77,6 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Added by Windsurf
+export PATH="/Users/marcoluzi/.codeium/windsurf/bin:$PATH"
