@@ -1,0 +1,22 @@
+[core]
+    editor = nvim
+
+[fetch]
+    prune = true
+
+[ghq]
+    root = ~/development/repos
+
+[gpg]
+    format = ssh
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[user]
+    name = Marco Luzi
+    email = dev@luzimarco.ch
+    signingkey = ~/.ssh/id_ed25519.pub

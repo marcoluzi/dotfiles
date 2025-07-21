@@ -1,0 +1,19 @@
+- defaults:
+    clean:
+      force: true
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ['~', '~/.config']
+
+- shell:
+    - [git submodule update --init --recursive, Running git submodule update]
+
+- link:
+    ~/.config/git/config: config/git/config
+    ~/.config/hypr: config/hypr
+    ~/.config/waybar: config/waybar
+    ~/.config/wlogout: config/wlogout
+    ~/.config/rofi: config/rofi

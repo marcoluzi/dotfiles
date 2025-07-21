@@ -1,0 +1,439 @@
+#!/bin/bash
+
+# Arch Linux System Maintenance Script with LVM Snapshots
+# This script performs system maintenance tasks with LVM snapshot backup
+
+# Main function to run the maintenance tasks
+main() {
+    # Check if running as root
+    if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root"
+        return 1
+    fi
+
+    # Get the username of the user who invoked sudo
+    if [ -n "$SUDO_USER" ]; then
+        REAL_USER="$SUDO_USER"
+    else
+        echo "This script must be run with sudo"
+        return 1
+    fi
+
+    # Configuration
+    SNAPSHOT_SIZE="10G"  # Default size of the LVM snapshot
+    SNAPSHOT_PREFIX="root_snapshot_maintenance"
+    SNAPSHOT_NAME="${SNAPSHOT_PREFIX}_$(date +%Y%m%d_%H%M%S)"
+    LOG_RETENTION_DAYS=7
+    CACHE_VERSIONS_TO_KEEP=3
+
+    # Function to convert size to bytes
+    convert_to_bytes() {
+        local size=$1
+        local value=${size%[GgMmKk]*}
+        local unit=${size##*[0-9]}
+        case ${unit^^} in
+            G) echo $((value * 1024 * 1024 * 1024));;
+            M) echo $((value * 1024 * 1024));;
+            K) echo $((value * 1024));;
+            *) echo "$value";;
+        esac
+    }
+
+    # Function to get available space in VG
+    get_vg_free_space() {
+        local vg=$1
+        vgs --noheadings --units b -o vg_free "$vg" | tr -d ' B'
+    }
+
+    # Function to get root VG and LV
+    get_root_vg_lv() {
+        ROOT_VG=$(lvs --noheadings -o vg_name $(findmnt -n -o SOURCE /) | tr -d ' ')
+        ROOT_LV=$(lvs --noheadings -o lv_name $(findmnt -n -o SOURCE /) | tr -d ' ')
+    }
+
+    # Function to check if snapshot is older than a day
+    is_snapshot_old() {
+        local snapshot=$1
+        local vg=$2
+        
+        # Get creation time of snapshot using lv_time field
+        local create_time_str=$(lvs --noheadings -o lv_time "/dev/$vg/$snapshot" | tr -d ' ')
+        
+        # If we can't get the creation time, assume it's old for safety
+        if [ -z "$create_time_str" ]; then
+            echo "Warning: Could not determine snapshot age for $snapshot, assuming it's old"
+            return 0
+        fi
+        
+        # Format the date string properly (insert space between date and time)
+        create_time_str=$(echo "$create_time_str" | sed 's/\([0-9]\)\([0-9][0-9]:[0-9][0-9]:[0-9][0-9]\)/\1 \2/')
+        
+        # Convert the date string to Unix timestamp using date command
+        local create_time=$(date -d "$create_time_str" +%s 2>/dev/null)
+        if [ $? -ne 0 ]; then
+            echo "Warning: Could not parse creation time for $snapshot, assuming it's old"
+            return 0
+        fi
+        
+        local current_time=$(date +%s)
+        local age_seconds=$((current_time - create_time))
+        local day_seconds=86400  # 24 hours in seconds
+        
+        # Return 0 (true) if snapshot is older than a day
+        [ $age_seconds -gt $day_seconds ]
+    }
+
+    # Function to find and remove old snapshot
+    remove_old_snapshot() {
+        echo "Checking for existing snapshots..."
+        get_root_vg_lv
+        if [ -n "$ROOT_VG" ]; then
+            echo "Searching in volume group: $ROOT_VG"
+            # Find existing maintenance snapshots
+            echo "Running: lvs --noheadings -o lv_name $ROOT_VG"
+            ALL_LVS=$(lvs --noheadings -o lv_name "$ROOT_VG")
+            echo "Found logical volumes:"
+            echo "$ALL_LVS"
+            
+            OLD_SNAPSHOTS=$(echo "$ALL_LVS" | grep "${SNAPSHOT_PREFIX}" | tr -d ' ')
+            if [ -n "$OLD_SNAPSHOTS" ]; then
+                echo "Found existing snapshots:"
+                echo "$OLD_SNAPSHOTS"
+                local any_removed=false
+                for snapshot in $OLD_SNAPSHOTS; do
+                    if is_snapshot_old "$snapshot" "$ROOT_VG"; then
+                        echo "Removing old snapshot (>24h): $snapshot"
+                        if ! lvremove -f "/dev/$ROOT_VG/$snapshot"; then
+                            echo "Warning: Failed to remove snapshot $snapshot"
+                            return 1
+                        fi
+                        any_removed=true
+                    else
+                        echo "Snapshot $snapshot is less than 24h old, skipping removal and creation"
+                        return 2  # Special return code to indicate we should skip creation
+                    fi
+                done
+                if [ "$any_removed" = true ]; then
+                    echo "Successfully removed old snapshots"
+                    # Verify removal
+                    REMAINING=$(lvs --noheadings -o lv_name "$ROOT_VG" | grep "${SNAPSHOT_PREFIX}")
+                    if [ -n "$REMAINING" ]; then
+                        echo "Warning: Some snapshots may remain:"
+                        echo "$REMAINING"
+                    fi
+                fi
+            else
+                echo "No existing snapshots found matching pattern: ${SNAPSHOT_PREFIX}"
+            fi
+        else
+            echo "Error: Could not determine root volume group"
+            return 1
+        fi
+    }
+
+    # Function to create LVM snapshot
+    create_snapshot() {
+        echo "Creating LVM snapshot..."
+        get_root_vg_lv
+        
+        if [ -n "$ROOT_VG" ] && [ -n "$ROOT_LV" ]; then
+            # Remove old snapshot before creating new one
+            remove_old_snapshot
+            local remove_status=$?
+            if [ $remove_status -eq 2 ]; then
+                echo "Recent snapshot exists, skipping new snapshot creation"
+                return 2  # Special return code to indicate recent snapshot exists
+            elif [ $remove_status -ne 0 ]; then
+                echo "Error removing old snapshot"
+                return 1
+            fi
+            
+            # Check available space
+            local free_space=$(get_vg_free_space "$ROOT_VG")
+            local required_space=$(convert_to_bytes "$SNAPSHOT_SIZE")
+            
+            if [ "$free_space" -lt "$required_space" ]; then
+                local free_space_gb=$((free_space / 1024 / 1024 / 1024))
+                echo "Warning: Insufficient space for ${SNAPSHOT_SIZE} snapshot (only ${free_space_gb}G available)"
+                echo "Would you like to:"
+                echo "1) Create a smaller snapshot with available space"
+                echo "2) Skip snapshot creation"
+                read -p "Enter choice (1-2): " choice
+                
+                case $choice in
+                    1)
+                        # Use 90% of available space to be safe
+                        local safe_size=$((free_space_gb * 90 / 100))
+                        SNAPSHOT_SIZE="${safe_size}G"
+                        echo "Creating snapshot with size ${SNAPSHOT_SIZE}..."
+                        ;;
+                    2)
+                        echo "Skipping snapshot creation"
+                        return 2
+                        ;;
+                    *)
+                        echo "Invalid choice. Skipping snapshot creation"
+                        return 2
+                        ;;
+                esac
+            fi
+            
+            # Create new snapshot
+            if ! lvcreate -L "$SNAPSHOT_SIZE" -s -n "$SNAPSHOT_NAME" "/dev/$ROOT_VG/$ROOT_LV"; then
+                echo "Error: Failed to create snapshot"
+                return 1
+            fi
+            echo "Created snapshot: $SNAPSHOT_NAME"
+            return 0
+        else
+            echo "Error: Could not determine root volume group or logical volume"
+            return 1
+        fi
+    }
+
+    # Function to run commands as the real user
+    run_as_user() {
+        sudo -u "$REAL_USER" "$@"
+    }
+
+    # Function to check if a command exists
+    command_exists() {
+        command -v "$1" >/dev/null 2>&1
+    }
+
+    # Function to handle package updates interactively
+    handle_updates() {
+        local update_type="$1"
+        
+        # First, sync the package databases
+        run_as_user yay -Sy
+        
+        # Get list of available updates
+        echo "Checking for available updates..."
+        if [ "$update_type" = "system" ]; then
+            UPDATES=$(run_as_user yay -Qu)
+        else
+            UPDATES=$(run_as_user yay -Qua)
+        fi
+        
+        if [ -z "$UPDATES" ]; then
+            echo "No updates available."
+            return
+        fi
+        
+        # Create a temporary file for package selection
+        TMPFILE=$(mktemp)
+        echo "$UPDATES" > "$TMPFILE"
+        
+        if command_exists dialog; then
+            # Debug: show what we're about to pass to dialog
+            echo "Debug: Generating dialog options..."
+            dialog_options=$(awk '{printf "%s \"Current: %s %s %s\" 0 ", $1, $2, $3, $4}' "$TMPFILE")
+            echo "Debug: Dialog options: $dialog_options"
+            
+            # Use dialog to create a checklist with proper height/width
+            SELECTED=$(dialog --stdout --title "Select packages to update" \
+                             --checklist "Space to select/unselect packages:" 20 100 15 \
+                             $dialog_options)
+            clear
+        else
+            # Fallback to simple list and read
+            echo "Available updates:"
+            cat "$TMPFILE" | nl
+            echo "Enter the numbers of packages to update (space-separated) or press Enter to update all:"
+            read -r numbers
+            if [ -z "$numbers" ]; then
+                SELECTED=$(cat "$TMPFILE")
+            else
+                SELECTED=$(for num in $numbers; do sed -n "${num}p" "$TMPFILE"; done)
+            fi
+        fi
+        
+        # Clean up
+        rm "$TMPFILE"
+        
+        # If user selected packages, update them
+        if [ -n "$SELECTED" ]; then
+            echo "Updating selected packages..."
+            run_as_user yay -S --needed $SELECTED
+        else
+            echo "No packages selected for update."
+        fi
+    }
+
+    # Function to handle Flatpak updates interactively
+    handle_flatpak_updates() {
+        if ! command_exists flatpak; then
+            echo "Flatpak is not installed. Skipping Flatpak updates."
+            return
+        fi
+
+        # Update Flatpak repositories
+        echo "Updating Flatpak repositories..."
+        run_as_user flatpak update --no-deps
+
+        # Get list of available updates
+        UPDATES=$(run_as_user flatpak remote-ls --updates)
+        
+        if [ -z "$UPDATES" ]; then
+            echo "No Flatpak updates available."
+            return
+        fi
+        
+        # Create a temporary file for package selection
+        TMPFILE=$(mktemp)
+        echo "$UPDATES" > "$TMPFILE"
+        
+        if command_exists dialog; then
+            # Use dialog to create a checklist with application IDs
+            SELECTED=$(dialog --stdout --title "Select Flatpak packages to update" \
+                             --checklist "Space to select/unselect packages:" 0 0 0 \
+                             $(awk '{printf "%s %s/%s on ", $1, $3, $1}' "$TMPFILE"))
+            clear
+        else
+            # Fallback to simple list and read
+            echo "Available updates:"
+            cat "$TMPFILE" | nl
+            echo "Enter the numbers of packages to update (space-separated) or press Enter to update all:"
+            read -r numbers
+            if [ -z "$numbers" ]; then
+                SELECTED=$(awk '{print $1}' "$TMPFILE")
+            else
+                SELECTED=$(for num in $numbers; do sed -n "${num}p" "$TMPFILE" | awk '{print $1}'; done)
+            fi
+        fi
+        
+        # Clean up
+        rm "$TMPFILE"
+        
+        # If user selected packages, update them
+        if [ -n "$SELECTED" ]; then
+            echo "Updating selected Flatpak packages..."
+            for app in $SELECTED; do
+                echo "Updating $app..."
+                run_as_user flatpak update --no-deps "$app"
+            done
+        else
+            echo "No packages selected for update."
+        fi
+    }
+
+    echo "Starting system maintenance at $(date)"
+
+    # Create snapshot (but continue even if it fails)
+    create_snapshot
+    snapshot_status=$?
+
+    # Continue with updates regardless of snapshot status
+    echo "1. Package Updates..."
+    echo "Would you like to:"
+    echo "1) Update system packages"
+    echo "2) Update AUR packages"
+    echo "3) Update Flatpak packages"
+    echo "4) Update all (system + AUR + Flatpak)"
+    echo "5) Skip updates"
+    read -p "Enter your choice (1-5): " update_choice
+
+    case $update_choice in
+        1)
+            handle_updates "system"
+            ;;
+        2)
+            handle_updates "aur"
+            ;;
+        3)
+            handle_flatpak_updates
+            ;;
+        4)
+            echo "Handling system packages..."
+            handle_updates "system"
+            echo "Handling AUR packages..."
+            handle_updates "aur"
+            echo "Handling Flatpak packages..."
+            handle_flatpak_updates
+            ;;
+        5)
+            echo "Skipping updates..."
+            ;;
+        *)
+            echo "Invalid choice. Skipping updates..."
+            ;;
+    esac
+
+    echo "2. Cleaning package cache..."
+    read -p "Would you like to clean package cache? [y/N] " clean_cache
+    if [[ $clean_cache =~ ^[Yy]$ ]]; then
+        if ! run_as_user yay -Qi pacman-contrib > /dev/null 2>&1; then
+            run_as_user yay -S --noconfirm pacman-contrib
+        fi
+        paccache -r -k $CACHE_VERSIONS_TO_KEEP
+
+        # Clean yay cache
+        echo "Cleaning yay cache..."
+        run_as_user yay -Sc --noconfirm
+
+        # Clean Flatpak unused runtimes and extensions
+        if command_exists flatpak; then
+            echo "Cleaning Flatpak unused data..."
+            run_as_user flatpak uninstall --unused --assumeyes
+        fi
+    fi
+
+    echo "3. Removing orphan packages..."
+    ORPHANS=$(run_as_user yay -Qtdq)
+    if [ -n "$ORPHANS" ]; then
+        echo "Found the following orphaned packages:"
+        echo "$ORPHANS"
+        read -p "Would you like to remove them? [y/N] " remove_orphans
+        if [[ $remove_orphans =~ ^[Yy]$ ]]; then
+            run_as_user yay -Rns $(run_as_user yay -Qtdq)
+        fi
+    else
+        echo "No orphaned packages found."
+    fi
+
+    echo "4. Cleaning user cache..."
+    read -p "Would you like to clean user cache directories? [y/N] " clean_user_cache
+    if [[ $clean_user_cache =~ ^[Yy]$ ]]; then
+        for user_home in /home/*; do
+            if [ -d "$user_home/.cache" ]; then
+                user=$(basename "$user_home")
+                echo "Cleaning cache for user $user..."
+                rm -rf "$user_home/.cache/*"
+            fi
+        done
+    fi
+
+    echo "5. Cleaning system logs..."
+    read -p "Would you like to clean system logs older than $LOG_RETENTION_DAYS days? [y/N] " clean_logs
+    if [[ $clean_logs =~ ^[Yy]$ ]]; then
+        journalctl --vacuum-time="${LOG_RETENTION_DAYS}d"
+    fi
+
+    # Check system status
+    echo "6. System status summary:"
+    echo "Disk usage:"
+    df -h /
+    echo
+    echo "Memory usage:"
+    free -h
+    echo
+    echo "Package cache size:"
+    du -sh /var/cache/pacman/pkg/
+    echo "Yay cache size:"
+    du -sh "/home/$REAL_USER/.cache/yay"
+    if command_exists flatpak; then
+        echo "Flatpak data size:"
+        du -sh /var/lib/flatpak
+    fi
+
+    echo "System maintenance completed at $(date)"
+    if [ $snapshot_status -eq 0 ]; then
+        echo "Snapshot '$SNAPSHOT_NAME' has been created and will be kept until the next maintenance run."
+        echo "To restore the system to this point, use:"
+        echo "lvconvert --merge /dev/$ROOT_VG/$SNAPSHOT_NAME"
+    fi
+}
+
+# Run main function
+main "$@"

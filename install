@@ -7,18 +7,18 @@ if [ $# -eq 0 ]; then
     echo "Usage:"
     echo "  ./install mac17         Setup MacBook Pro 2017"
     echo "  ./install mac23         Setup MacBook Pro 2023"
-    echo "  ./install endeavour     Setup EndeavourOS"
+    echo "  ./install tower	    Setup Tower"
     exit 1
 fi
 
 # Validate arguments
 case "$1" in
-    mac17|mac23|endeavour) ;;
+    mac17|mac23|tower) ;;
     *)
         echo "Usage:"
         echo "  ./install mac17         Setup MacBook Pro 2017"
         echo "  ./install mac23         Setup MacBook Pro 2023"
-        echo "  ./install endeavour     Setup EndeavourOS"
+        echo "  ./install tower		Setup Tower"
         exit 1
         ;;
 esac
@@ -46,6 +46,6 @@ if [[ "$1" == mac* ]]; then
 
     PATH=/opt/homebrew/bin:/usr/local/bin:~/.config/composer/vendor/bin:$PATH \
     "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" --plugin-dir dotbot-brew -v -c "${CONFIG_FILE}"
-elif [[ "$1" == "endeavour" ]]; then
-    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" -p dotbot-yay/yay.py -c "endeavour.conf.yaml"
+elif [[ "$1" == "tower" ]]; then
+    "${BASE_DIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASE_DIR}" -c "tower.conf.yaml"
 fi
